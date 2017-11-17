@@ -1,10 +1,16 @@
-FROM jboss/base-jdk:7
+FROM openjdk:7
 
 ENV JBOSS_VERSION 7.1.1.Final
 ENV JBOSS_SHA1 fcec1002dce22d3281cc08d18d0ce72006868b6f
 ENV JBOSS_HOME /opt/jboss/jboss
 
 USER root
+
+RUN groupadd -r jboss -g 1000 && useradd -u 1000 -r -g jboss -m -d /opt/jboss -s /sbin/nologin -c "JBoss user" jboss && \
+    chmod 755 /opt/jboss
+
+# Set the working directory to jboss' user home directory
+WORKDIR /opt/jboss
 
 # Add the JBOSS distribution to /opt, and make jboss the owner of the extracted tar content
 # Make sure the distribution is available from a well-known place
